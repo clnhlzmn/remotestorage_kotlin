@@ -17,10 +17,11 @@ class Discovery {
         private val gson = Gson()
 
         fun lookup(userAddress: String, onFailure: (String) -> Unit, onSuccess: (JSONResourceDescriptor) -> Unit) {
-            val uaParts = userAddress.partition { c -> c == '@' }
+            val uaParts = userAddress.split('@')
+            //TODO: ensure uaParts.length == 2
             val webfingerQueryUrl =
                 URL(
-                    "https://${uaParts.first}/.well-known/webfinger/?resource=${URLEncoder.encode(userAddress, "UTF-8")}")
+                    "https://${uaParts[1]}/.well-known/webfinger?resource=${URLEncoder.encode("acct:$userAddress", "UTF-8")}")
             val webfingerQueryRequest = Request.Builder()
                 .method("GET", null)
                 .url(webfingerQueryUrl)
