@@ -14,8 +14,6 @@ class Discovery {
 
     companion object {
 
-        private val gson = Gson()
-
         fun lookup(userAddress: String, onFailure: (String) -> Unit, onSuccess: (JSONResourceDescriptor) -> Unit) {
             val uaParts = userAddress.split('@')
             //TODO: ensure uaParts.length == 2
@@ -34,7 +32,7 @@ class Discovery {
                     override fun onResponse(call: Call, response: Response) {
                         if (response.code() == 200) {
                             val result =
-                                gson.fromJson<JSONResourceDescriptor>(
+                                xyz.colinholzman.remotestorage_kotlin.Gson.gson.fromJson<JSONResourceDescriptor>(
                                     response.body()?.string(),
                                     object: TypeToken<JSONResourceDescriptor>(){}.type
                                 )
