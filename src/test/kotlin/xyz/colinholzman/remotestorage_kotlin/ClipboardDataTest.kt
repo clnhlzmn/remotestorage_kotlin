@@ -8,8 +8,8 @@ internal class ClipboardDataTest {
     @Test
     fun clipboardDataTest() {
         val data = ClipboardData(Date(), "test")
-        val toJson = Gson.gson.toJson(data)
-        val backToData = Gson.gson.fromJson<ClipboardData>(toJson, object: TypeToken<ClipboardData>(){}.type)
+        val toJson = data.toJson()
+        val backToData = ClipboardData.fromJson(toJson)
         assert(data == backToData)
     }
 }

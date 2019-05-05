@@ -28,6 +28,17 @@ class RemoteStorage(
         })
     }
 
+    fun putSync(path: String, value: String): Boolean {
+        val res = Http.client.newCall(
+            Request.Builder()
+                .url("$href$path")
+                .method("PUT", RequestBody.create(MediaType.parse("text/plain"), value))
+                .addHeader("Authorization", "Bearer $token")
+                .build()
+        ).execute()
+        return res.code() in 200..299
+    }
+
     fun get(path: String, onFailure: (String) -> Unit, onSuccess: (String) -> Unit) {
         Http.client.newCall(
         Request.Builder()
@@ -46,6 +57,16 @@ class RemoteStorage(
                     onFailure(response.code().toString())
             }
         })
+    }
+
+    fun getSync(path: String): String? {
+        return Http.client.newCall(
+            Request.Builder()
+                .url("$href$path")
+                .method("GET", null)
+                .addHeader("Authorization", "Bearer $token")
+                .build()
+        ).execute().body()?.string()
     }
 
     fun delete(path: String, onFailure: (String) -> Unit, onSuccess: (String) -> Unit) {

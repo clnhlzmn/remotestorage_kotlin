@@ -31,12 +31,13 @@ class Discovery {
                     }
                     override fun onResponse(call: Call, response: Response) {
                         if (response.code() == 200) {
-                            val result =
-                                xyz.colinholzman.remotestorage_kotlin.Gson.gson.fromJson<JSONResourceDescriptor>(
-                                    response.body()?.string(),
-                                    object: TypeToken<JSONResourceDescriptor>(){}.type
-                                )
-                            onSuccess(result)
+                            val body = response.body()
+                            if (body != null) {
+                                val result = JSONResourceDescriptor.fromJson(body.string())
+                                onSuccess(result)
+                            } else {
+                                onFailure("no body")
+                            }
                         } else {
                             onFailure(response.code().toString())
                         }

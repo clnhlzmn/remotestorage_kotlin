@@ -1,16 +1,24 @@
 package xyz.colinholzman.remotestorage_kotlin
 
 import com.google.gson.TypeAdapter
+import com.google.gson.reflect.TypeToken
 import com.google.gson.stream.JsonReader
 import com.google.gson.stream.JsonWriter
+import xyz.colinholzman.remotestorage_kotlin.Gson.Companion.gson
 import java.util.*
 import java.text.SimpleDateFormat
 import java.util.TimeZone
 
-
-
 data class ClipboardData(val created: Date, val content: String) {
+
     constructor() : this(Date(), "")
+
+    companion object {
+        fun fromJson(json: String): ClipboardData =
+            gson.fromJson<ClipboardData>(json, object: TypeToken<ClipboardData>(){}.type)
+    }
+
+    fun toJson(): String = gson.toJson(this)
 
     class Adapter : TypeAdapter<ClipboardData>() {
         init {
