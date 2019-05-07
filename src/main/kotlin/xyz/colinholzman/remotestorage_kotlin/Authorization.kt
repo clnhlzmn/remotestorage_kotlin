@@ -1,6 +1,7 @@
 package xyz.colinholzman.remotestorage_kotlin
 
 import java.net.URL
+import java.util.HashMap
 
 class Authorization {
     companion object {
@@ -21,6 +22,17 @@ class Authorization {
 
         fun getVersion(jrd: JSONResourceDescriptor): String {
             return jrd.links!![0].properties!!["http://remotestorage.io/spec/version"]!!
+        }
+
+        //get a map of parameters from a url fragment encoded in application/x-www-form-urlencoded
+        fun getMap(fragment: String): Map<String, String> {
+            val params = fragment.split("&")
+            val map = HashMap<String, String>()
+            for (param in params) {
+                val pair = param.split("=").dropLastWhile { it.isEmpty() }
+                map[pair[0]] = pair[1]
+            }
+            return map
         }
     }
 }
