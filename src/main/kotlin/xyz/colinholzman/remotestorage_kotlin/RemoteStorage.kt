@@ -73,4 +73,8 @@ class RemoteStorage(
 
     }
 
+    fun deleteSync(path: String): Boolean {
+        return true
+    }
+
 }
